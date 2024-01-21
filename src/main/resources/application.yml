@@ -1,3 +1,8 @@
+api:
+  list-stock: https://iss.moex.com/iss/statistics/engines/stock/quotedsecurities
+
+
+
 server:
   port: 8080
 
@@ -5,7 +10,7 @@ spring:
 
   datasource:
     # Base stock
-    url: jdbc:postgresql://localhost:5432/stock?currentSchema=public
+    url: jdbc:postgresql://localhost:5432/postgres?currentSchema=public
     username: 'postgres'
     password: 'postgres'
 

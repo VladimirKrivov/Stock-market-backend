@@ -12,14 +12,14 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "stocks")
+@Table(name = "stocks_table")
 @Entity
 public class Stocks {
     @Id
-    @Column(name = "user_id", nullable = false)
+    @Column(name = "stocks_id", nullable = false)
     @GeneratedValue(generator = "UUID")
     private UUID id;
 
-    @Column(name = "user_name", nullable = false)
+    @Column(name = "stocks_name", nullable = false)
     private String name;
 }
