@@ -11,12 +11,12 @@ import stock.market.backend.app.services.StockSearch;
 public class StockController {
 
     private final ApiService apiService;
-    private final StockSearch stockSearch;
+//    private final StockSearch stockSearch;
 
     @GetMapping("/test")
     public String testController(){
-//        return apiService.testMet();
+        return apiService.testMet();
 //        return stockSearch.
-        return null;
+//        return null;
     }
 }

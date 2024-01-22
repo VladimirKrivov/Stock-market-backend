@@ -1,29 +1,15 @@
-package stock.market.backend.app.services;
+package stock.market.backend.app.models.json;
 
-import lombok.AllArgsConstructor;
+import com.google.gson.Gson;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
-import org.springframework.stereotype.Service;
-import stock.market.backend.app.services.impl.ApiServiceImpl;
+import stock.market.backend.app.models.json.model.RootJson;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
-
-@Service
-@AllArgsConstructor
-public class ApiService implements ApiServiceImpl {
-
-    public String testMet() {
-        // Название акции, которую ищем
-        String stockName = "Apple&Inc.";
+public class JsonParser {
+    public RootJson parse() {
         String responseString = null;
 
         // API Московской биржи для поиска акций
@@ -44,13 +30,17 @@ public class ApiService implements ApiServiceImpl {
 
             // Обработка полученных данных
             // ...
-
-            // Вывод результатов поиска
             System.out.println(responseString);
-            return responseString;
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return responseString;
+
+
+
+        Gson gson = new Gson();
+        gson.fromJson(responseString, RootJson.class);
+
+        return null;
     }
 }
