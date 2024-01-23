@@ -1,4 +1,4 @@
-package stock.market.backend.app.services;
+package stock.market.backend.app.services.test;
 
 
 import org.apache.http.HttpResponse;
@@ -16,17 +16,25 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class StockSearch {
 
-    public static void main123(String[] args) {
-        JsonParser jsonParser = new JsonParser();
-        RootJson rootJson = jsonParser.parse();
-        System.out.println(rootJson);
+    public static void main(String[] args) throws ParseException {
+        String dateStr = "2024-01-22";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate date = LocalDate.parse(dateStr, formatter);
+        System.out.println(date);
     }
 
 
-    public static void main(String[] args) {
+    public static void main123(String[] args) {
         StringBuffer content = new StringBuffer();
 
         try {

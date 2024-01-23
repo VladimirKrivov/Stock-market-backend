@@ -1,5 +1,6 @@
 api:
   list-stock: https://iss.moex.com/iss/statistics/engines/stock/quotedsecurities
+  stocks: https://iss.moex.com/iss/securities.json?q=
 
 
 

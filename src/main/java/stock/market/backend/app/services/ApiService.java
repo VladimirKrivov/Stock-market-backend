@@ -1,13 +1,23 @@
 package stock.market.backend.app.services;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import stock.market.backend.app.models.dto.HistoryDto;
+import stock.market.backend.app.models.dto.StockDto;
+import stock.market.backend.app.models.entity.History;
+import stock.market.backend.app.models.entity.Stocks;
+import stock.market.backend.app.repositories.HistoryRepository;
+import stock.market.backend.app.repositories.StockRepositories;
 import stock.market.backend.app.services.impl.ApiServiceImpl;
+import stock.market.backend.app.util.Mapper;
+import stock.market.backend.app.util.Parser;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -16,41 +26,151 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class ApiService implements ApiServiceImpl {
 
-    public String testMet() {
-        // Название акции, которую ищем
-        String stockName = "Apple&Inc.";
-        String responseString = null;
+    private final StockRepositories stockRepositories;
+    private final HistoryRepository historyRepository;
+    private final Parser parser;
+    private final Mapper mapper;
 
-        // API Московской биржи для поиска акций
-        String url = "https://iss.moex.com/iss/securities.json?q=Сбербанк";
+    @Override
+    public StockDto findStock(String nameStock) {
+        StockDto stockDto = findStockInApi(nameStock);
+        Stocks stock = stockRepositories.findBySecId(stockDto.getSecId());
+        StockDto newDto;
+        if (stock == null) {
+            return mapper.stockToStockDto(stockRepositories
+                    .save(mapper.stocksDtoToStock(stockDto)));
+        } else {
+            newDto = mapper.stockToStockDto(stock);
+        }
+        return newDto;
+    }
 
-        // Создание HttpClient
-        HttpClient client = HttpClientBuilder.create().build();
+    @Override
+    public Stocks findStockEntity(String nameStock) {
+        StockDto stockDto = findStockInApi(nameStock);
+        Stocks stock = stockRepositories.findBySecId(stockDto.getSecId());
+        if (stock == null) {
+            return stockRepositories
+                    .save(mapper.stocksDtoToStock(stockDto));
+        } else {
+            return stock;
+        }
+    }
 
-        // Создание запроса методом GET
-        HttpGet request = new HttpGet(url);
+    @Override
+    public StockDto findStockInApi(String nameStock) {
+        StringBuffer content = new StringBuffer();
+        String shareLine;
+        String urlApi = "https://iss.moex.com/iss/securities.json?q=";
+
 
         try {
-            // Выполнение запроса
-            HttpResponse response = client.execute(request);
+            URL url = new URL(urlApi + nameStock);
+            URLConnection urlConn = url.openConnection();
+            log.info("Connect for: {}, Stock name: {}", urlApi, nameStock);
 
-            // Получение тела ответа в виде строки
-            responseString = EntityUtils.toString(response.getEntity());
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConn.getInputStream()));
+            String line;
 
-            // Обработка полученных данных
-            // ...
+            while ((line = bufferedReader.readLine()) != null) {
+                if (line.contains("common_share")) {
+                    content.append(line + "\n");
+                }
+            }
+            bufferedReader.close();
+            shareLine = String.valueOf(content);
+            log.info("Common share is find. Line: {}", content);
 
-            // Вывод результатов поиска
-            System.out.println(responseString);
-            return responseString;
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        return responseString;
+
+        return parser.parseStock(shareLine);
     }
+
+    @Override
+    public HistoryDto getHistory(String company, String from, String till) {
+        LocalDate startDate = parser.parseDate(from);
+        LocalDate endDate = parser.parseDate(till);
+        Integer days = getDayOn(startDate, endDate);
+        log.info("Рабочие дни с: {}, по: {}. Количество: {}", startDate, endDate, days);
+
+
+
+        Stocks stocks = findStockEntity(company);
+
+        List<History> histories = historyRepository.findByTradeDateBetweenAndSecId(startDate, endDate, stocks.getSecId());
+        log.info("Полученно историй торгов: {}, Рабочих дней за диапазон дат: {}", histories.size(), days);
+
+        List<HistoryDto> historyDto = parser.parseHistory(findHistoryInApi(stocks.getSecId(),
+                from, till));
+
+        if (histories.size() != days) {
+            historyRepository.saveAll(mapper.listHistoryDtoToListHistory(historyDto));
+        }
+
+
+
+
+
+
+        return null;
+    }
+
+    @Override
+    public ArrayList<String> findHistoryInApi(String secId, String from, String till) {
+        String res = "https://iss.moex.com/iss/history/engines/stock/markets/shares/securities/"
+                + secId + ".json?from=" + from + "&till=" + till;
+
+        StringBuilder content = new StringBuilder();
+        ArrayList<String> strings = new ArrayList<>();
+
+        try {
+            URL url = new URL(res);
+            URLConnection urlConn = url.openConnection();
+
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConn.getInputStream()));
+            String line;
+
+            while ((line = bufferedReader.readLine()) != null) {
+                if (line.contains(secId)) {
+                    String column = line;
+                    strings.add(line);
+                }
+                content.append(line + "\n");
+            }
+            bufferedReader.close();
+            return strings;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
+    }
+
+
+    private Integer getDayOn(LocalDate startDate, LocalDate endDate) {
+        Integer workingDays = 0;
+        LocalDate date = startDate;
+
+        while (!date.isAfter(endDate)) {
+            if (date.getDayOfWeek() != DayOfWeek.SATURDAY && date.getDayOfWeek() != DayOfWeek.SUNDAY) {
+                workingDays++;
+            }
+            date = date.plusDays(1);
+        }
+        return workingDays;
+    }
+
+
 }

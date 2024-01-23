@@ -8,4 +8,5 @@ import java.util.UUID;
 
 @Repository
 public interface StockRepositories extends CrudRepository<Stocks, UUID> {
+    Stocks findBySecId(String secId);
 }
