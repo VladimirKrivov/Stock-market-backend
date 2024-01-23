@@ -9,6 +9,8 @@ import stock.market.backend.app.controllers.impl.HistoryControllerImpl;
 import stock.market.backend.app.models.dto.HistoryDto;
 import stock.market.backend.app.services.ApiService;
 
+import java.util.List;
+
 @RestController
 @AllArgsConstructor
 @Slf4j
@@ -21,9 +23,9 @@ public class HistoryController implements HistoryControllerImpl {
             method = RequestMethod.GET,
             value = "/find/{company}"
     )
-    public ResponseEntity<HistoryDto> findHistory(@PathVariable String company,
-                                                  @RequestParam("from") String from,
-                                                  @RequestParam("till") String till) {
+    public ResponseEntity<List<HistoryDto>> findHistory(@PathVariable String company,
+                                                        @RequestParam("from") String from,
+                                                        @RequestParam("till") String till) {
 
 
         return new ResponseEntity<>(apiService.getHistory(company, from, till), HttpStatus.CREATED);

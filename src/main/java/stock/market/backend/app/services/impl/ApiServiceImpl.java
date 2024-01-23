@@ -5,6 +5,7 @@ import stock.market.backend.app.models.dto.StockDto;
 import stock.market.backend.app.models.entity.Stocks;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public interface ApiServiceImpl {
 
@@ -14,7 +15,7 @@ public interface ApiServiceImpl {
 
     Stocks findStockEntity(String nameStock);
 
-    HistoryDto getHistory(String company, String from, String till);
+    List<HistoryDto> getHistory(String company, String from, String till);
 
     ArrayList<String> findHistoryInApi(String secId, String from, String till);
 }

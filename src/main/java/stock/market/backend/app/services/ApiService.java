@@ -2,12 +2,6 @@ package stock.market.backend.app.services;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.util.EntityUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import stock.market.backend.app.models.dto.HistoryDto;
 import stock.market.backend.app.models.dto.StockDto;
@@ -20,10 +14,8 @@ import stock.market.backend.app.util.Mapper;
 import stock.market.backend.app.util.Parser;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.time.DayOfWeek;
@@ -99,32 +91,33 @@ public class ApiService implements ApiServiceImpl {
     }
 
     @Override
-    public HistoryDto getHistory(String company, String from, String till) {
+    public List<HistoryDto> getHistory(String company, String from, String till) {
         LocalDate startDate = parser.parseDate(from);
         LocalDate endDate = parser.parseDate(till);
         Integer days = getDayOn(startDate, endDate);
-        log.info("Рабочие дни с: {}, по: {}. Количество: {}", startDate, endDate, days);
-
 
 
         Stocks stocks = findStockEntity(company);
+        List<HistoryDto> historyDtoList;
+        List<History> histories;
 
-        List<History> histories = historyRepository.findByTradeDateBetweenAndSecId(startDate, endDate, stocks.getSecId());
-        log.info("Полученно историй торгов: {}, Рабочих дней за диапазон дат: {}", histories.size(), days);
-
-        List<HistoryDto> historyDto = parser.parseHistory(findHistoryInApi(stocks.getSecId(),
-                from, till));
+        histories = historyRepository.findByTradeDateBetweenAndSecId(startDate, endDate, stocks.getSecId());
 
         if (histories.size() != days) {
-            historyRepository.saveAll(mapper.listHistoryDtoToListHistory(historyDto));
+            historyDtoList = parser.parseHistory(findHistoryInApi(stocks.getSecId(),
+                    from, till));
+
+            for (HistoryDto dto : historyDtoList) {
+                History history = historyRepository.findByTradeDateAndSecId(dto.getTradeDate(), dto.getSecId());
+                if (history == null) {
+                    historyRepository.save(mapper.historyDtoToHistory(dto));
+                }
+            }
+            histories = historyRepository.findByTradeDateBetweenAndSecId(startDate, endDate, stocks.getSecId());
         }
+        log.info("Полученно историй торгов: {}, Рабочих дней за диапазон дат: {}", histories.size(), days);
 
-
-
-
-
-
-        return null;
+        return mapper.listHistoryToHistoryDto(histories);
     }
 
     @Override
@@ -138,7 +131,7 @@ public class ApiService implements ApiServiceImpl {
         try {
             URL url = new URL(res);
             URLConnection urlConn = url.openConnection();
-
+            log.info("Connect Find History url: {}, SecId: {}, Date from: {}, Till: {}", res, secId, from, till);
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConn.getInputStream()));
             String line;
 

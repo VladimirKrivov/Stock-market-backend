@@ -38,6 +38,23 @@ public class Mapper {
     }
 
 
+    public History historyDtoToHistory(HistoryDto dto) {
+        History entity = new History();
+
+        entity.setTradeDate(dto.getTradeDate());
+        entity.setShortName(dto.getShortName());
+        entity.setSecId(dto.getSecId());
+        entity.setValue(dto.getValue());
+        entity.setOpen(dto.getOpen());
+        entity.setLow(dto.getLow());
+        entity.setHigh(dto.getHigh());
+        entity.setClose(dto.getClose());
+        entity.setVolume(dto.getVolume());
+
+        return entity;
+    }
+
+
     public List<History> listHistoryDtoToListHistory(List<HistoryDto> listDto) {
 
         List<History> histories = new ArrayList<>();
@@ -59,5 +76,27 @@ public class Mapper {
         }
 
         return histories;
+    }
+
+    public List<HistoryDto> listHistoryToHistoryDto(List<History> listHistory) {
+
+        List<HistoryDto> dtoHistory = new ArrayList<>();
+
+        for (History history : listHistory) {
+            HistoryDto dto = new HistoryDto();
+
+            dto.setTradeDate(history.getTradeDate());
+            dto.setShortName(history.getShortName());
+            dto.setSecId(history.getSecId());
+            dto.setValue(history.getValue());
+            dto.setOpen(history.getOpen());
+            dto.setLow(history.getLow());
+            dto.setHigh(history.getHigh());
+            dto.setClose(history.getClose());
+            dto.setVolume(history.getVolume());
+            dtoHistory.add(dto);
+        }
+
+        return dtoHistory;
     }
 }

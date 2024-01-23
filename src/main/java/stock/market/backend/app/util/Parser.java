@@ -72,8 +72,6 @@ public class Parser {
             HistoryDto historyDto = new HistoryDto();
 
             historyDto.setTradeDate(parseDate(arg[1]));
-//            historyDto.setTradeDate(OffsetDateTime.now());
-
             historyDto.setShortName(arg[2]);
             historyDto.setSecId(arg[3]);
             historyDto.setValue(Double.valueOf(arg[5]));
@@ -93,9 +91,7 @@ public class Parser {
 
     public LocalDate parseDate(String data) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate date = LocalDate.parse(data, formatter);
-        System.out.println(date);
-          return date;
+        return LocalDate.parse(data, formatter);
     }
 
 }

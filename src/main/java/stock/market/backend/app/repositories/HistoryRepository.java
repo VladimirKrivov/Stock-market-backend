@@ -12,4 +12,6 @@ import java.util.UUID;
 public interface HistoryRepository extends CrudRepository<History, UUID> {
 
     List<History> findByTradeDateBetweenAndSecId(LocalDate startDate, LocalDate endDate, String secId);
+
+    History findByTradeDateAndSecId(LocalDate tradeDate, String secId);
 }
