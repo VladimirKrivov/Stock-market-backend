@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import stock.market.backend.app.controllers.impl.HistoryControllerImpl;
 import stock.market.backend.app.models.dto.HistoryDto;
-import stock.market.backend.app.services.ApiService;
+import stock.market.backend.app.services.HistoryService;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ import java.util.List;
 @RequestMapping("/api/v1/history")
 public class HistoryController implements HistoryControllerImpl {
 
-    private final ApiService apiService;
+    private final HistoryService historyService;
 
     @RequestMapping(
             method = RequestMethod.GET,
@@ -28,6 +28,6 @@ public class HistoryController implements HistoryControllerImpl {
                                                         @RequestParam("till") String till) {
 
 
-        return new ResponseEntity<>(apiService.getHistory(company, from, till), HttpStatus.CREATED);
+        return new ResponseEntity<>(historyService.getHistory(company, from, till), HttpStatus.CREATED);
     }
 }

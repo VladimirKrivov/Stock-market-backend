@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -66,17 +65,17 @@ public class Stocks {
 //    @Column(name = "marketprice_boardid")
 //    private String marketPriceBoardId;
 
-    @ManyToMany(fetch = FetchType.EAGER,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE,
-            })
-    @JoinTable(name = "stocks-history",
-            joinColumns = @JoinColumn(name = "stocks_id"),
-            inverseJoinColumns = @JoinColumn(name = "history_id")
-
-    )
-    private List<History> histories;
+//    @ManyToMany(fetch = FetchType.EAGER,
+//            cascade = {
+//                    CascadeType.PERSIST,
+//                    CascadeType.MERGE,
+//            })
+//    @JoinTable(name = "stocks-history",
+//            joinColumns = @JoinColumn(name = "stocks_id"),
+//            inverseJoinColumns = @JoinColumn(name = "history_id")
+//
+//    )
+//    private List<History> histories;
 
 
 }

@@ -5,9 +5,7 @@ import org.springframework.stereotype.Component;
 import stock.market.backend.app.models.dto.HistoryDto;
 import stock.market.backend.app.models.dto.StockDto;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
