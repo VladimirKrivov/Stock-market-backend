@@ -4,14 +4,16 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.List;
+
 @Getter
 @Setter
 @ToString
-public class HistoryDto {
+public class ShortHistoryDto {
     private String userName;
 
     private String from;
     private String till;
 
-
+    private List<StockDto> stocksDto;
 }
