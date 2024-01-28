@@ -7,7 +7,6 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class UserDto {
+public class ShortUserDto {
     private String name;
-    private String password;
 }

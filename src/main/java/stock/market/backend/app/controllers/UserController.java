@@ -1,9 +1,51 @@
 package stock.market.backend.app.controllers;
 
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import stock.market.backend.app.controllers.impl.UserControllerImpl;
+import stock.market.backend.app.models.dto.ShortUserDto;
+import stock.market.backend.app.models.dto.UserDto;
+import stock.market.backend.app.services.UserService;
 
 @RestController
 @AllArgsConstructor
-public class UserController {
+@RequestMapping("/api/v1/auth")
+public class UserController implements UserControllerImpl {
+
+    private final UserService userService;
+
+
+    @Override
+    @RequestMapping(
+            method = RequestMethod.POST,
+            value = "/register"
+    )
+    public ResponseEntity<ShortUserDto> register(@RequestBody UserDto dto) {
+        System.out.println("Проверка DTO");
+        System.out.println(dto.getName());
+        System.out.println(dto.getPassword());
+        ShortUserDto userDto = userService.register(dto);
+        if (userDto != null) {
+            return new ResponseEntity<>(userDto, HttpStatus.OK);
+        } else
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+    }
+
+    @Override
+    @RequestMapping(
+            method = RequestMethod.POST,
+            value = "/login"
+    )
+    public ResponseEntity<ShortUserDto> login(@RequestBody UserDto dto) {
+        ShortUserDto userDto = userService.login(dto);
+        if (userDto != null) {
+            return new ResponseEntity<>(userDto, HttpStatus.OK);
+        } else
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+    }
 }

@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -17,40 +19,33 @@ import java.util.UUID;
 @Entity
 public class History {
     @Id
-    @Column(name = "stocks_id", nullable = false)
+    @Column(name = "history_id", nullable = false)
     @GeneratedValue(generator = "UUID")
     private UUID id;
 
-    @Column(name = "trade_date")
-    private LocalDate tradeDate;
+    @Column(name = "create_date")
+    private OffsetDateTime create;
 
-    @Column(name = "short_name")
-    private String shortName;
+    @Column(name = "from_date")
+    private LocalDate from;
 
-    @Column(name = "secid")
-    private String secId;
+    @Column(name = "till_date")
+    private LocalDate till;
 
-    @Column(name = "value")
-    private Double value;
+    @Column(name = "result")
+    private Double result;
 
-    @Column(name = "open")
-    private Double open;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    @Column(name = "low")
-    private Double low;
 
-    @Column(name = "high")
-    private Double high;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "history")
+    private List<HistoryElem> historyElem;
 
-    @Column(name = "close")
-    private Double close;
 
-    @Column(name = "volume")
-    private Double volume;
-
-//    @ManyToMany(fetch = FetchType.EAGER,
-//            mappedBy = "histories")
-//    private List<Stocks> order;
+//    @OneToMany(fetch = FetchType.EAGER, mappedBy = "project")
+//    private Set<Repository> repositories = new HashSet<>();
 
 
 }

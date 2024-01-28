@@ -2,10 +2,11 @@ package stock.market.backend.app.util;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import stock.market.backend.app.models.dto.HistoryDto;
+import stock.market.backend.app.models.dto.StockFromDateDto;
 import stock.market.backend.app.models.dto.StockDto;
 
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +41,7 @@ public class Parser {
         return stock;
     }
 
-    public List<HistoryDto> parseHistory(List<String> strings) {
+    public List<StockFromDateDto> parseHistory(List<String> strings) {
         List<String> newList = new ArrayList<>();
         List<String[]> arraysStr = new ArrayList<>();
         for (String str : strings) {
@@ -64,10 +65,10 @@ public class Parser {
             arraysStr.add(parts);
         }
 
-        List<HistoryDto> historyList = new ArrayList<>();
+        List<StockFromDateDto> historyList = new ArrayList<>();
 
         for (String[] arg : arraysStr) {
-            HistoryDto historyDto = new HistoryDto();
+            StockFromDateDto historyDto = new StockFromDateDto();
 
             historyDto.setTradeDate(parseDate(arg[1]));
             historyDto.setShortName(arg[2]);
@@ -90,6 +91,11 @@ public class Parser {
     public LocalDate parseDate(String data) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return LocalDate.parse(data, formatter);
+    }
+
+    public String formatOffsetDateTime(OffsetDateTime offsetDateTime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
+        return offsetDateTime.format(formatter);
     }
 
 }

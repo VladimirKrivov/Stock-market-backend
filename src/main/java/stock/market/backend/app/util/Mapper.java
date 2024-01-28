@@ -1,16 +1,20 @@
 package stock.market.backend.app.util;
 
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
-import stock.market.backend.app.models.dto.HistoryDto;
-import stock.market.backend.app.models.dto.StockDto;
-import stock.market.backend.app.models.entity.History;
-import stock.market.backend.app.models.entity.Stocks;
+import stock.market.backend.app.models.dto.*;
+import stock.market.backend.app.models.entity.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
+@AllArgsConstructor
 public class Mapper {
+
+    private final Parser parser;
+
+    // Stocks
     public Stocks stocksDtoToStock(StockDto dto) {
         Stocks entity = new Stocks();
 
@@ -37,9 +41,9 @@ public class Mapper {
         return dto;
     }
 
-
-    public History historyDtoToHistory(HistoryDto dto) {
-        History entity = new History();
+    // StockFromDateDtoToStockFromDate
+    public StockFromDate StockFromDateDtoToStockFromDate(StockFromDateDto dto) {
+        StockFromDate entity = new StockFromDate();
 
         entity.setTradeDate(dto.getTradeDate());
         entity.setShortName(dto.getShortName());
@@ -54,13 +58,13 @@ public class Mapper {
         return entity;
     }
 
+    // Не забыть удалить
+    public List<StockFromDate> listHistoryDtoToListHistory(List<StockFromDateDto> listDto) {
 
-    public List<History> listHistoryDtoToListHistory(List<HistoryDto> listDto) {
+        List<StockFromDate> histories = new ArrayList<>();
 
-        List<History> histories = new ArrayList<>();
-
-        for (HistoryDto dto : listDto) {
-            History entity = new History();
+        for (StockFromDateDto dto : listDto) {
+            StockFromDate entity = new StockFromDate();
 
             entity.setTradeDate(dto.getTradeDate());
             entity.setShortName(dto.getShortName());
@@ -78,12 +82,13 @@ public class Mapper {
         return histories;
     }
 
-    public List<HistoryDto> listHistoryToHistoryDto(List<History> listHistory) {
 
-        List<HistoryDto> dtoHistory = new ArrayList<>();
+    public List<StockFromDateDto> listHistoryToHistoryDto(List<StockFromDate> listHistory) {
 
-        for (History history : listHistory) {
-            HistoryDto dto = new HistoryDto();
+        List<StockFromDateDto> dtoHistory = new ArrayList<>();
+
+        for (StockFromDate history : listHistory) {
+            StockFromDateDto dto = new StockFromDateDto();
 
             dto.setTradeDate(history.getTradeDate());
             dto.setShortName(history.getShortName());
@@ -98,5 +103,76 @@ public class Mapper {
         }
 
         return dtoHistory;
+    }
+
+    // Users
+    public User userDtoToUser(UserDto dto) {
+        User entity = new User();
+
+        entity.setName(dto.getName());
+        entity.setPassword(dto.getPassword());
+
+        return entity;
+    }
+
+    public UserDto userToUserDto(User entity) {
+        UserDto dto = new UserDto();
+
+        dto.setName(entity.getName());
+        dto.setPassword(entity.getPassword());
+
+        return dto;
+    }
+
+    public ShortUserDto userToShortUserDto(User entity) {
+        ShortUserDto dto = new ShortUserDto();
+
+        dto.setName(entity.getName());
+
+        return dto;
+    }
+
+    public HistoryElemDto historyElemToHistoryElemDto(HistoryElem entity) {
+        HistoryElemDto dto = new HistoryElemDto();
+
+        dto.setDate(String.valueOf(entity.getDate()));
+        dto.setShortName(entity.getShortName());
+        String result = String.format("%.5f", entity.getGrowth());
+        dto.setGrowth(result);
+        return dto;
+    }
+
+
+
+    public HistoryDto historyToHistoryDto(History entity) {
+        HistoryDto dto = new HistoryDto();
+
+        dto.setUserName(entity.getUser().getName());
+        dto.setFrom(String.valueOf(entity.getFrom()));
+        dto.setTill(String.valueOf(entity.getTill()));
+
+        String result = String.format("%.2f", entity.getResult());
+        dto.setResult(result);
+
+
+
+//        dto.setResult(String.valueOf(entity.getResult()));
+
+        dto.setCreate(parser.formatOffsetDateTime(entity.getCreate()));
+
+        List<HistoryElem> elemList = entity.getHistoryElem();
+        List<HistoryElemDto> elemDto = new ArrayList<>();
+
+        if (elemList == null) {
+            elemDto.add(new HistoryElemDto());
+        } else {
+            for (HistoryElem elem : elemList) {
+                elemDto.add(historyElemToHistoryElemDto(elem));
+            }
+        }
+
+        dto.setHistoryElemDto(elemDto);
+
+        return dto;
     }
 }
