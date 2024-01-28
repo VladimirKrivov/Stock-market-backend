@@ -35,47 +35,12 @@ public class Stocks {
     @Column(name = "isin")
     private String isin;
 
-//    @Column(name = "is_traded")
-//    private Integer isTraded;
-
-//    @Column(name = "emitent_id")
-//    private Integer emiTentId;
-
     @Column(name = "emitent_title")
     private String emitEntTitle;
 
-//    @Column(name = "emitent_inn")
-//    private String emitEntInn;
-//
-//    @Column(name = "emitent_okpo")
-//    private String emitentOkpo;
-//
-//    @Column(name = "gosreg")
-//    private String gosReg;
-//
-//    @Column(name = "type")
-//    private String type;
-//
-//    @Column(name = "group")
-//    private String group;
-//
-//    @Column(name = "primary_boardid")
-//    private String primaryBoardId;
-//
-//    @Column(name = "marketprice_boardid")
-//    private String marketPriceBoardId;
-
-//    @ManyToMany(fetch = FetchType.EAGER,
-//            cascade = {
-//                    CascadeType.PERSIST,
-//                    CascadeType.MERGE,
-//            })
-//    @JoinTable(name = "stocks-history",
-//            joinColumns = @JoinColumn(name = "stocks_id"),
-//            inverseJoinColumns = @JoinColumn(name = "history_id")
-//
-//    )
-//    private List<History> histories;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private User user;
 
 
 }

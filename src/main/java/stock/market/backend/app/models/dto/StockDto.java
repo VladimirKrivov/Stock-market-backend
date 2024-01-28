@@ -16,6 +16,4 @@ public class StockDto {
     private String isin;
     private String emitEntTitle;
 
-    public StockDto() {
-    }
 }

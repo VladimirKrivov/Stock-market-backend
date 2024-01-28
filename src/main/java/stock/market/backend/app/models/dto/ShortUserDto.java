@@ -7,9 +7,6 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class HistoryElemDto {
-
-    private String date;
-    private String shortName;
-    private String growth;
+public class ShortUserDto {
+    private String name;
 }

@@ -4,7 +4,7 @@ import stock.market.backend.app.models.dto.StockDto;
 import stock.market.backend.app.models.entity.Stocks;
 
 public interface StocksServiceImpl {
-    StockDto findStock(String nameStock);
+    StockDto findStock(String nameStock, String nameUser);
     Stocks findStockEntity(String nameStock);
 
 }

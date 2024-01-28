@@ -1,5 +1,6 @@
 package stock.market.backend.app.util;
 
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import stock.market.backend.app.models.dto.*;
 import stock.market.backend.app.models.entity.*;
@@ -8,7 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
+@AllArgsConstructor
 public class Mapper {
+
+    private final Parser parser;
 
     // Stocks
     public Stocks stocksDtoToStock(StockDto dto) {
@@ -120,12 +124,21 @@ public class Mapper {
         return dto;
     }
 
+    public ShortUserDto userToShortUserDto(User entity) {
+        ShortUserDto dto = new ShortUserDto();
+
+        dto.setName(entity.getName());
+
+        return dto;
+    }
+
     public HistoryElemDto historyElemToHistoryElemDto(HistoryElem entity) {
         HistoryElemDto dto = new HistoryElemDto();
 
         dto.setDate(String.valueOf(entity.getDate()));
         dto.setShortName(entity.getShortName());
-        dto.setGrowth(entity.getGrowth());
+        String result = String.format("%.5f", entity.getGrowth());
+        dto.setGrowth(result);
         return dto;
     }
 
@@ -138,9 +151,28 @@ public class Mapper {
         dto.setFrom(String.valueOf(entity.getFrom()));
         dto.setTill(String.valueOf(entity.getTill()));
 
+        String result = String.format("%.2f", entity.getResult());
+        dto.setResult(result);
+
+
+
+//        dto.setResult(String.valueOf(entity.getResult()));
+
+        dto.setCreate(parser.formatOffsetDateTime(entity.getCreate()));
+
         List<HistoryElem> elemList = entity.getHistoryElem();
+        List<HistoryElemDto> elemDto = new ArrayList<>();
 
+        if (elemList == null) {
+            elemDto.add(new HistoryElemDto());
+        } else {
+            for (HistoryElem elem : elemList) {
+                elemDto.add(historyElemToHistoryElemDto(elem));
+            }
+        }
 
+        dto.setHistoryElemDto(elemDto);
 
+        return dto;
     }
 }

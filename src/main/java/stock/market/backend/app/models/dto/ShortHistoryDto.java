@@ -15,5 +15,5 @@ public class ShortHistoryDto {
     private String from;
     private String till;
 
-    private List<StockDto> stocksDto;
+    private List<StockDto> stocksList;
 }

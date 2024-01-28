@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.List;
+
 @Getter
 @Setter
 @ToString
@@ -12,6 +14,9 @@ public class HistoryDto {
 
     private String from;
     private String till;
+    private String create;
 
+    private String result;
 
+    private List<HistoryElemDto> historyElemDto;
 }

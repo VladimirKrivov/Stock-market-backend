@@ -30,7 +30,7 @@ public class HistoryElem {
     @Column(name = "growth")
     private Double growth;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="history_id")
     private History history;
 

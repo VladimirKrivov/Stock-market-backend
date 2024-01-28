@@ -13,7 +13,7 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "history_table")
+@Table(name = "Stock_from_date_table")
 @Entity
 public class StockFromDate {
     @Id
