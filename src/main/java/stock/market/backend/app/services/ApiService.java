@@ -41,6 +41,7 @@ public class ApiService implements ApiServiceImpl {
             while ((line = bufferedReader.readLine()) != null) {
                 if (line.contains("common_share")) {
                     content.append(line + "\n");
+                    break;
                 }
             }
             bufferedReader.close();

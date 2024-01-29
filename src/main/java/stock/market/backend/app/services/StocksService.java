@@ -29,7 +29,8 @@ public class StocksService implements StocksServiceImpl {
     // Найти акцию по имени пользователя
     @Override
     public StockDto findStock(String nameStock, String nameUser) {
-        StockDto stockDto = apiService.findStockInApi(nameStock);
+        String[] words = nameStock.trim().split("\\s+");
+        StockDto stockDto = apiService.findStockInApi(words[0]);
 
         User user = userRepositories.findUsersByName(nameUser);
 
@@ -64,7 +65,9 @@ public class StocksService implements StocksServiceImpl {
     // Найти в базе или обратится к api и найти акцию по имени
     @Override
     public Stocks findStockEntity(String nameStock, String username) {
-        StockDto stockDto = apiService.findStockInApi(nameStock);
+        String[] words = nameStock.trim().split("\\s+");
+
+        StockDto stockDto = apiService.findStockInApi(saveAfterDot(words[0]));
 
         User user = userRepositories.findUsersByName(username);
 
@@ -77,12 +80,18 @@ public class StocksService implements StocksServiceImpl {
         }
 
         Stocks stock = stockRepositories.findBySecIdAndUsers(stockDto.getSecId(), user);
+        StockDto newDto;
 
-
-        // Вот тут не работает
         if (stock == null) {
-            return stockRepositories
-                    .save(mapper.stocksDtoToStock(stockDto));
+            Stocks newStock = stockRepositories.save(mapper.stocksDtoToStock(stockDto));
+
+            newStock.getUsers().add(user);
+
+            user.getStocks().add(newStock);
+
+            userRepositories.save(user);
+            Stocks stocks2 = stockRepositories.save(newStock);
+            return stocks2;
         } else {
             return stock;
         }
@@ -152,5 +161,13 @@ public class StocksService implements StocksServiceImpl {
         userRepositories.save(user);
 //        stockRepositories.deleteBySecIdAndUsers(secid, user);
 
+    }
+
+    public String saveAfterDot(String sentence) {
+        int dotIndex = sentence.lastIndexOf('.');
+        if (dotIndex == -1 || dotIndex == sentence.length() - 1) {
+            return sentence;
+        }
+        return sentence.substring(dotIndex + 1);
     }
 }
