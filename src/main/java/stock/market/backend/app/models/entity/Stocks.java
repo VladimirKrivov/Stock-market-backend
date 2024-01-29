@@ -45,6 +45,3 @@ public class Stocks {
     private List<User> users;
 
 }
-//    @ManyToOne(fetch = FetchType.EAGER)
-//    @JoinColumn(name = "user_id")
-//    private User users;

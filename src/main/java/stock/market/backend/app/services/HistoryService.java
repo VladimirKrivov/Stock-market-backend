@@ -38,7 +38,6 @@ public class HistoryService {
     private final UserRepositories userRepositories;
 
     public HistoryDto calcPricesStocks(ShortHistoryDto dto) {
-        log.info("Запуск метода расчета");
 
         History history = new History();
 
@@ -110,7 +109,6 @@ public class HistoryService {
 
 
         return mapper.historyToHistoryDto(newHistory);
-//        return null;
     }
 
     public List<HistoryDto> findHistoryToUser(String username) {

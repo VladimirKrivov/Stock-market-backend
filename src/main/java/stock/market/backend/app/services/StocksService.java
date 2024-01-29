@@ -140,11 +140,6 @@ public class StocksService implements StocksServiceImpl {
             log.info("User name: {} not found", name);
         }
 
-//        Stocks stock = user.getStocks().stream()
-//                .filter(s -> s.getId().equals(secid))
-//                .findFirst()
-//                .orElseThrow(() -> new IllegalArgumentException("Stock not found"));
-
         List<Stocks> stocks = user.getStocks();
         Stocks stock = null;
 
@@ -159,7 +154,6 @@ public class StocksService implements StocksServiceImpl {
         user.getStocks().remove(stock);
 
         userRepositories.save(user);
-//        stockRepositories.deleteBySecIdAndUsers(secid, user);
 
     }
 

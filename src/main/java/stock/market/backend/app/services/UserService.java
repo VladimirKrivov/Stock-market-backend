@@ -61,7 +61,6 @@ public class UserService implements UserServiceImpl {
         User user = userRepositories.findUsersByName(dto.getName());
         ShortUserDto userDto = null;
         if (user != null) {
-//            if (user.getPassword().equals(passwordEncoder.encode(dto.getPassword()))) {
             if (passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
                 return mapper.userToShortUserDto(user);
             } else {

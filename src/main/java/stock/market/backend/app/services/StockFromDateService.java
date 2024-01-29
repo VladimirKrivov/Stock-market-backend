@@ -56,7 +56,6 @@ public class StockFromDateService implements StockFromDateServiceImpl {
         }
         log.info("Полученно историй торгов: {}, Рабочих дней за диапазон дат: {}", histories.size(), days);
 
-//        return mapper.listHistoryToHistoryDto(histories);
         return histories;
     }
 

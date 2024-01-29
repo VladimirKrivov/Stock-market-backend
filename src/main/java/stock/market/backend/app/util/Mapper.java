@@ -63,53 +63,6 @@ public class Mapper {
         return entity;
     }
 
-    // Не забыть удалить
-    public List<StockFromDate> listHistoryDtoToListHistory(List<StockFromDateDto> listDto) {
-
-        List<StockFromDate> histories = new ArrayList<>();
-
-        for (StockFromDateDto dto : listDto) {
-            StockFromDate entity = new StockFromDate();
-
-            entity.setTradeDate(dto.getTradeDate());
-            entity.setShortName(dto.getShortName());
-            entity.setSecId(dto.getSecId());
-            entity.setValue(dto.getValue());
-            entity.setOpen(dto.getOpen());
-            entity.setLow(dto.getLow());
-            entity.setHigh(dto.getHigh());
-            entity.setClose(dto.getClose());
-            entity.setVolume(dto.getVolume());
-
-            histories.add(entity);
-        }
-
-        return histories;
-    }
-
-
-    public List<StockFromDateDto> listHistoryToHistoryDto(List<StockFromDate> listHistory) {
-
-        List<StockFromDateDto> dtoHistory = new ArrayList<>();
-
-        for (StockFromDate history : listHistory) {
-            StockFromDateDto dto = new StockFromDateDto();
-
-            dto.setTradeDate(history.getTradeDate());
-            dto.setShortName(history.getShortName());
-            dto.setSecId(history.getSecId());
-            dto.setValue(history.getValue());
-            dto.setOpen(history.getOpen());
-            dto.setLow(history.getLow());
-            dto.setHigh(history.getHigh());
-            dto.setClose(history.getClose());
-            dto.setVolume(history.getVolume());
-            dtoHistory.add(dto);
-        }
-
-        return dtoHistory;
-    }
-
     // Users
     public User userDtoToUser(UserDto dto) {
         User entity = new User();
