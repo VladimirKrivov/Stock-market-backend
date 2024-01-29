@@ -40,7 +40,6 @@ public class Stocks {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
-    private User user;
-
+    private User users;
 
 }

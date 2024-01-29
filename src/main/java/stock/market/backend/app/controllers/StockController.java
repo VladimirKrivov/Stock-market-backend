@@ -18,11 +18,14 @@ import java.util.List;
 @AllArgsConstructor
 @Slf4j
 @RequestMapping("/api/v1/stock")
-public class StockController{
+public class StockController implements StockControllerImpl{
 
+    // Объект stocks service
     private final StocksService stocksService;
 
 
+    // Запрос на получени акции либо из базы, либо от api
+    @Override
     @RequestMapping(
             method = RequestMethod.GET,
             value = "/find"
@@ -35,6 +38,8 @@ public class StockController{
         return new ResponseEntity<>(stockDto, HttpStatus.CREATED);
     }
 
+    // Найти все акции конкретного пользователя
+    @Override
     @RequestMapping(
             method = RequestMethod.GET,
             value = "/find/all"
@@ -46,6 +51,8 @@ public class StockController{
         return new ResponseEntity<>(stockDto, HttpStatus.OK);
     }
 
+    //Удалить акцию пользователя
+    @Override
     @RequestMapping(
             method = RequestMethod.DELETE,
             value = "/find/delete"

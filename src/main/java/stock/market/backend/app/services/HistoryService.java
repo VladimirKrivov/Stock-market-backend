@@ -18,6 +18,8 @@ import stock.market.backend.app.util.Parser;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,8 +48,11 @@ public class HistoryService {
 
         LocalDate from = parser.parseDate(dto.getFrom());
         LocalDate till = parser.parseDate(dto.getTill());
-        Integer calendarDays = (int) ChronoUnit.DAYS.between(from, till) + 1;
-        history.setCreate(OffsetDateTime.now());
+        int calendarDays = (int) ChronoUnit.DAYS.between(from, till) + 1;
+
+
+        ZoneId moscowZone = ZoneId.of("Europe/Moscow");
+        history.setCreate(OffsetDateTime.now(moscowZone));
 
         history.setFrom(from);
         history.setTill(till);

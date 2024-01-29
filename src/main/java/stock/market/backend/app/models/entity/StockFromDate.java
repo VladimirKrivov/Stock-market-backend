@@ -48,9 +48,4 @@ public class StockFromDate {
     @Column(name = "volume")
     private Double volume;
 
-//    @ManyToMany(fetch = FetchType.EAGER,
-//            mappedBy = "histories")
-//    private List<Stocks> order;
-
-
 }

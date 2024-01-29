@@ -28,6 +28,7 @@ public class StockFromDateService implements StockFromDateServiceImpl {
     private final Utils utils;
 
 
+    // Получить список продаж за период времени для конкретной компании
     @Override
     public List<StockFromDate> getHistory(String company, String from, String till) {
         LocalDate startDate = parser.parseDate(from);

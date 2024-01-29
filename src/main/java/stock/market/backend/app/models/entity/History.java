@@ -44,8 +44,4 @@ public class History {
     private List<HistoryElem> historyElem;
 
 
-//    @OneToMany(fetch = FetchType.EAGER, mappedBy = "project")
-//    private Set<Repository> repositories = new HashSet<>();
-
-
 }

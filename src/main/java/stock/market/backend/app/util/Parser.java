@@ -14,6 +14,8 @@ import java.util.List;
 @Component
 @Slf4j
 public class Parser {
+
+    // Парсим Json ответы от сервера мос биржи
     public StockDto parseStock(String content) {
         StockDto stock = new StockDto();
 
@@ -94,7 +96,8 @@ public class Parser {
     }
 
     public String formatOffsetDateTime(OffsetDateTime offsetDateTime) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         return offsetDateTime.format(formatter);
     }
 

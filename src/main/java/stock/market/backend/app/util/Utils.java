@@ -8,7 +8,9 @@ import java.time.LocalDate;
 
 @Component
 @Slf4j
+// Вспомогательный класс в котором производится расчет рабочих дней за определенную дату
 public class Utils {
+
     public Integer getDayOn(LocalDate startDate, LocalDate endDate) {
         Integer workingDays = 0;
         LocalDate date = startDate;

@@ -17,10 +17,12 @@ import java.util.ArrayList;
 @Service
 @AllArgsConstructor
 @Slf4j
+// Сервис с помощью которого идет обращение к мосбирже
 public class ApiService implements ApiServiceImpl {
 
     private final Parser parser;
 
+    //Найти акцию по имени
     @Override
     public StockDto findStockInApi(String nameStock) {
         StringBuffer content = new StringBuffer();
@@ -53,7 +55,7 @@ public class ApiService implements ApiServiceImpl {
     }
 
 
-
+    // Получить историю продаж акций по secid акции и конкретному промежутку времени
     @Override
     public ArrayList<String> findHistoryInApi(String secId, String from, String till) {
         String res = "https://iss.moex.com/iss/history/engines/stock/markets/shares/securities/"
@@ -84,9 +86,4 @@ public class ApiService implements ApiServiceImpl {
 
 
     }
-
-
-
-
-
 }

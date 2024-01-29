@@ -5,6 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -15,6 +16,7 @@ public class HistoryDto {
     private String from;
     private String till;
     private String create;
+    private Integer daysCalendar;
 
     private String result;
 

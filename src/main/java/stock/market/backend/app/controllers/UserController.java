@@ -17,9 +17,12 @@ import stock.market.backend.app.services.UserService;
 @RequestMapping("/api/v1/auth")
 public class UserController implements UserControllerImpl {
 
+    // Контроллер отвечающий за авторизацию и регистрацию
+
     private final UserService userService;
 
 
+    // Метод регистрации
     @Override
     @RequestMapping(
             method = RequestMethod.POST,
@@ -36,6 +39,7 @@ public class UserController implements UserControllerImpl {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
     }
 
+    // Метод авторизации
     @Override
     @RequestMapping(
             method = RequestMethod.POST,

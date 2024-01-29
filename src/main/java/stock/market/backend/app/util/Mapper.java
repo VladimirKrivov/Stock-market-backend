@@ -1,10 +1,12 @@
 package stock.market.backend.app.util;
 
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import stock.market.backend.app.models.dto.*;
 import stock.market.backend.app.models.entity.*;
 
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +14,9 @@ import java.util.List;
 @AllArgsConstructor
 public class Mapper {
 
+    // С помощью маппера производится конвертация из Entity в Dto и обратно
     private final Parser parser;
+    private final PasswordEncoder passwordEncoder;
 
     // Stocks
     public Stocks stocksDtoToStock(StockDto dto) {
@@ -24,6 +28,7 @@ public class Mapper {
         entity.setName(dto.getName());
         entity.setIsin(dto.getIsin());
         entity.setEmitEntTitle(dto.getEmitEntTitle());
+//        entity.setUsers(new ArrayList<>());
 
         return entity;
     }
@@ -110,7 +115,7 @@ public class Mapper {
         User entity = new User();
 
         entity.setName(dto.getName());
-        entity.setPassword(dto.getPassword());
+        entity.setPassword(passwordEncoder.encode(dto.getPassword()));
 
         return entity;
     }
@@ -147,9 +152,14 @@ public class Mapper {
     public HistoryDto historyToHistoryDto(History entity) {
         HistoryDto dto = new HistoryDto();
 
+//        dto.setId(dto.getId());
         dto.setUserName(entity.getUser().getName());
         dto.setFrom(String.valueOf(entity.getFrom()));
         dto.setTill(String.valueOf(entity.getTill()));
+
+        int calendarDays = (int) ChronoUnit.DAYS.between(entity.getFrom(), entity.getTill()) + 1;
+
+        dto.setDaysCalendar(calendarDays);
 
         String result = String.format("%.2f", entity.getResult());
         dto.setResult(result);

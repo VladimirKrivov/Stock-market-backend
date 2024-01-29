@@ -12,7 +12,7 @@ import java.util.UUID;
 public interface StockRepositories extends CrudRepository<Stocks, UUID> {
     Stocks findBySecId(String secId);
 
-    List<Stocks> findAllByUser(User user);
+    List<Stocks> findAllByUsers(User user);
 
-    void deleteBySecIdAndUser(String secid, User user);
+    void deleteBySecIdAndUsers(String secid, User user);
 }

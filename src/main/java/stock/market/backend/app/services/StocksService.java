@@ -26,6 +26,7 @@ public class StocksService implements StocksServiceImpl {
     private final Mapper mapper;
 
 
+    // Найти акцию по имени пользователя
     @Override
     public StockDto findStock(String nameStock, String nameUser) {
         StockDto stockDto = apiService.findStockInApi(nameStock);
@@ -40,12 +41,15 @@ public class StocksService implements StocksServiceImpl {
             log.info("User name: {} not found", nameUser);
         }
 
-
         Stocks stock = stockRepositories.findBySecId(stockDto.getSecId());
         StockDto newDto;
         if (stock == null) {
             Stocks newStock = stockRepositories.save(mapper.stocksDtoToStock(stockDto));
-            newStock.setUser(user);
+            newStock.setUsers(user);
+//            newStock.getUsers().add(user);
+//            user.getStocks().add(newStock);
+            userRepositories.save(user);
+//            newStock.ge
             return mapper.stockToStockDto(stockRepositories
                     .save(newStock));
         } else {
@@ -55,6 +59,7 @@ public class StocksService implements StocksServiceImpl {
     }
 
 
+    // Найти в базе или обратится к api и найти акцию по имени
     @Override
     public Stocks findStockEntity(String nameStock) {
         StockDto stockDto = apiService.findStockInApi(nameStock);
@@ -67,7 +72,8 @@ public class StocksService implements StocksServiceImpl {
         }
     }
 
-
+    // Получить все акции из портфеля конкретного пользователя
+    @Override
     public List<StockDto> findAllStockForUser(String username) {
         List<Stocks> stocks = new ArrayList<>();
         List<StockDto> stockDtoList = new ArrayList<>();
@@ -82,7 +88,7 @@ public class StocksService implements StocksServiceImpl {
             log.info("User name: {} not found", username);
         }
 
-        stocks = stockRepositories.findAllByUser(user);
+        stocks = stockRepositories.findAllByUsers(user);
 
         for (Stocks elem : stocks) {
             StockDto dto = new StockDto();
@@ -94,6 +100,8 @@ public class StocksService implements StocksServiceImpl {
         return stockDtoList;
     }
 
+    // Удалить акцию из портфеля у конкретного пользователя
+    @Override
     @Transactional
     public void deleteForUser(String name, String secid) {
 //        Поиск пользователя
@@ -107,7 +115,7 @@ public class StocksService implements StocksServiceImpl {
             log.info("User name: {} not found", name);
         }
 
-        stockRepositories.deleteBySecIdAndUser(secid, user);
+        stockRepositories.deleteBySecIdAndUsers(secid, user);
 
     }
 }

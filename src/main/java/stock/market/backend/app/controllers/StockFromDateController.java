@@ -21,11 +21,14 @@ public class StockFromDateController implements StockFromDateControllerImpl {
     private final StockFromDateService historyService;
     private final Mapper mapper;
 
+
+    // Узнать стоимость закрытия акции по имени за определенный промежуток времени
+    @Override
     @RequestMapping(
             method = RequestMethod.GET,
             value = "/find/{company}"
     )
-    public ResponseEntity<List<StockFromDateDto>> findHistory(@PathVariable String company,
+    public ResponseEntity<List<StockFromDateDto>> findStocksFromDate(@PathVariable String company,
                                                               @RequestParam("from") String from,
                                                               @RequestParam("till") String till) {
 

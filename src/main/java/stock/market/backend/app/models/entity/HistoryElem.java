@@ -31,17 +31,7 @@ public class HistoryElem {
     private Double growth;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="history_id")
+    @JoinColumn(name = "history_id")
     private History history;
-
-
-
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "project_id")
-//    private Project project;
-//
-//
-//    @Column(name = "project_id", insertable = false, updatable = false)
-//    private Long projectId;
 
 }
