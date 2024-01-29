@@ -5,5 +5,5 @@ import stock.market.backend.app.models.entity.StockFromDate;
 import java.util.List;
 
 public interface StockFromDateServiceImpl {
-    List<StockFromDate> getHistory(String company, String from, String till);
+    List<StockFromDate> getHistory(String company, String username, String from, String till);
 }

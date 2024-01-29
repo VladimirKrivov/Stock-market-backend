@@ -11,6 +11,7 @@ import java.util.UUID;
 @Repository
 public interface StockRepositories extends CrudRepository<Stocks, UUID> {
     Stocks findBySecId(String secId);
+    Stocks findBySecIdAndUsers(String secId, User user);
 
     List<Stocks> findAllByUsers(User user);
 

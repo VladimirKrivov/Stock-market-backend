@@ -30,13 +30,13 @@ public class StockFromDateService implements StockFromDateServiceImpl {
 
     // Получить список продаж за период времени для конкретной компании
     @Override
-    public List<StockFromDate> getHistory(String company, String from, String till) {
+    public List<StockFromDate> getHistory(String company, String username, String from, String till) {
         LocalDate startDate = parser.parseDate(from);
         LocalDate endDate = parser.parseDate(till);
         Integer days = utils.getDayOn(startDate, endDate);
 
 
-        Stocks stocks = stocksService.findStockEntity(company);
+        Stocks stocks = stocksService.findStockEntity(company, username);
         List<StockFromDateDto> historyDtoList;
         List<StockFromDate> histories;
 

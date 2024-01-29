@@ -1,5 +1,6 @@
 package stock.market.backend.app.controllers;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -52,6 +53,7 @@ public class StockController implements StockControllerImpl{
     }
 
     //Удалить акцию пользователя
+    @Transactional
     @Override
     @RequestMapping(
             method = RequestMethod.DELETE,

@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -38,8 +39,12 @@ public class Stocks {
     @Column(name = "emitent_title")
     private String emitEntTitle;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
-    private User users;
+
+
+    @ManyToMany(mappedBy = "stocks")
+    private List<User> users;
 
 }
+//    @ManyToOne(fetch = FetchType.EAGER)
+//    @JoinColumn(name = "user_id")
+//    private User users;

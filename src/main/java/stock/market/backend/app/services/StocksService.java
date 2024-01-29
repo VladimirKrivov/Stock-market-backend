@@ -41,17 +41,19 @@ public class StocksService implements StocksServiceImpl {
             log.info("User name: {} not found", nameUser);
         }
 
-        Stocks stock = stockRepositories.findBySecId(stockDto.getSecId());
+        Stocks stock = stockRepositories.findBySecIdAndUsers(stockDto.getSecId(), user);
         StockDto newDto;
+
         if (stock == null) {
             Stocks newStock = stockRepositories.save(mapper.stocksDtoToStock(stockDto));
-            newStock.setUsers(user);
-//            newStock.getUsers().add(user);
-//            user.getStocks().add(newStock);
+
+            newStock.getUsers().add(user);
+
+            user.getStocks().add(newStock);
+
             userRepositories.save(user);
-//            newStock.ge
-            return mapper.stockToStockDto(stockRepositories
-                    .save(newStock));
+            Stocks stocks2 = stockRepositories.save(newStock);
+            return mapper.stockToStockDto(stocks2);
         } else {
             newDto = mapper.stockToStockDto(stock);
         }
@@ -61,9 +63,23 @@ public class StocksService implements StocksServiceImpl {
 
     // Найти в базе или обратится к api и найти акцию по имени
     @Override
-    public Stocks findStockEntity(String nameStock) {
+    public Stocks findStockEntity(String nameStock, String username) {
         StockDto stockDto = apiService.findStockInApi(nameStock);
-        Stocks stock = stockRepositories.findBySecId(stockDto.getSecId());
+
+        User user = userRepositories.findUsersByName(username);
+
+        try {
+            if (user == null) {
+                throw new NullPointerException();
+            }
+        } catch (NullPointerException e) {
+            log.info("User name: {} not found", username);
+        }
+
+        Stocks stock = stockRepositories.findBySecIdAndUsers(stockDto.getSecId(), user);
+
+
+        // Вот тут не работает
         if (stock == null) {
             return stockRepositories
                     .save(mapper.stocksDtoToStock(stockDto));
@@ -115,7 +131,26 @@ public class StocksService implements StocksServiceImpl {
             log.info("User name: {} not found", name);
         }
 
-        stockRepositories.deleteBySecIdAndUsers(secid, user);
+//        Stocks stock = user.getStocks().stream()
+//                .filter(s -> s.getId().equals(secid))
+//                .findFirst()
+//                .orElseThrow(() -> new IllegalArgumentException("Stock not found"));
+
+        List<Stocks> stocks = user.getStocks();
+        Stocks stock = null;
+
+        for (Stocks elem : stocks) {
+            if (elem.getSecId().equals(secid)) {
+                stock = elem;
+            }
+        }
+
+
+
+        user.getStocks().remove(stock);
+
+        userRepositories.save(user);
+//        stockRepositories.deleteBySecIdAndUsers(secid, user);
 
     }
 }

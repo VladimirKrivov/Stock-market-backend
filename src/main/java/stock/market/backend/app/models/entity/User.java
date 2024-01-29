@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -26,5 +27,13 @@ public class User {
 
     @Column(name = "uzr_password", nullable = false)
     private String password;
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_stocks",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "stocks_id")
+    )
+    private List<Stocks> stocks;
 
 }

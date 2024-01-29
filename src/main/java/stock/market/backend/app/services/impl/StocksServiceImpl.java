@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface StocksServiceImpl {
     StockDto findStock(String nameStock, String nameUser);
-    Stocks findStockEntity(String nameStock);
+    Stocks findStockEntity(String nameStock, String username);
     void deleteForUser(String name, String secid);
     List<StockDto> findAllStockForUser(String username);
 

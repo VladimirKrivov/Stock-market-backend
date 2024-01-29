@@ -28,7 +28,7 @@ public class Mapper {
         entity.setName(dto.getName());
         entity.setIsin(dto.getIsin());
         entity.setEmitEntTitle(dto.getEmitEntTitle());
-//        entity.setUsers(new ArrayList<>());
+        entity.setUsers(new ArrayList<>());
 
         return entity;
     }
@@ -116,6 +116,7 @@ public class Mapper {
 
         entity.setName(dto.getName());
         entity.setPassword(passwordEncoder.encode(dto.getPassword()));
+        entity.setStocks(new ArrayList<>());
 
         return entity;
     }

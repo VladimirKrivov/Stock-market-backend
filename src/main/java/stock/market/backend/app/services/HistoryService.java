@@ -64,7 +64,7 @@ public class HistoryService {
         List<StockDto> stockDto = dto.getStocksList();
 
         for (StockDto elem : stockDto) {
-            stockFromDateList.addAll(stockFromDateService.getHistory(elem.getShortname(), dto.getFrom(), dto.getTill()));
+            stockFromDateList.addAll(stockFromDateService.getHistory(elem.getShortname(), dto.getUserName(), dto.getFrom(), dto.getTill()));
         }
 
         for (int i = 1; i < stockFromDateList.size(); i++) {

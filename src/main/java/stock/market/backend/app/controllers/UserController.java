@@ -29,9 +29,6 @@ public class UserController implements UserControllerImpl {
             value = "/register"
     )
     public ResponseEntity<ShortUserDto> register(@RequestBody UserDto dto) {
-        System.out.println("Проверка DTO");
-        System.out.println(dto.getName());
-        System.out.println(dto.getPassword());
         ShortUserDto userDto = userService.register(dto);
         if (userDto != null) {
             return new ResponseEntity<>(userDto, HttpStatus.OK);
