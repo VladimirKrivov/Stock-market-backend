@@ -17,23 +17,29 @@ import java.util.ArrayList;
 @Service
 @AllArgsConstructor
 @Slf4j
-// Сервис с помощью которого идет обращение к мосбирже
+/**
+ * Сервис с помощью которого идет обращение к мосбирже
+ */
 public class ApiService implements ApiServiceImpl {
 
     private final Parser parser;
 
-    //Найти акцию по имени
+    private final String FIND_STOCKS_URL = "https://iss.moex.com/iss/securities.json?q=";
+    private final String FIND_STOCKS_FROM_TILL_URL = "https://iss.moex.com/iss/history/engines/stock/markets/shares/securities/";
+
+    /**
+     Находит акцию по имени.
+     @param nameStock имя акции
+     @return объект StockDto, представляющий найденную акцию */
     @Override
     public StockDto findStockInApi(String nameStock) {
         StringBuffer content = new StringBuffer();
         String shareLine;
-        String urlApi = "https://iss.moex.com/iss/securities.json?q=";
-
 
         try {
-            URL url = new URL(urlApi + nameStock);
+            URL url = new URL(FIND_STOCKS_URL + nameStock);
             URLConnection urlConn = url.openConnection();
-            log.info("Connect for: {}, Stock name: {}", urlApi, nameStock);
+            log.info("Connect for: {}, Stock name: {}", FIND_STOCKS_URL, nameStock);
 
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConn.getInputStream()));
             String line;
@@ -55,12 +61,15 @@ public class ApiService implements ApiServiceImpl {
         return parser.parseStock(shareLine);
     }
 
-
-    // Получить историю продаж акций по secid акции и конкретному промежутку времени
+    /**
+     Получает историю продаж акций по коду secid и указанному промежутку времени.
+     @param secId код акции
+     @param from начальная дата периода
+     @param till конечная дата периода
+     @return список строк, представляющих историю продаж акций */
     @Override
     public ArrayList<String> findHistoryInApi(String secId, String from, String till) {
-        String res = "https://iss.moex.com/iss/history/engines/stock/markets/shares/securities/"
-                + secId + ".json?from=" + from + "&till=" + till;
+        String res = FIND_STOCKS_FROM_TILL_URL + secId + ".json?from=" + from + "&till=" + till;
 
         StringBuilder content = new StringBuilder();
         ArrayList<String> strings = new ArrayList<>();

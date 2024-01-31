@@ -12,17 +12,24 @@ import stock.market.backend.app.models.dto.ShortUserDto;
 import stock.market.backend.app.models.dto.UserDto;
 import stock.market.backend.app.services.UserService;
 
+/**
+ * Контроллер обработки запросов связанных с авторизацией и регистрацией
+ */
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/v1/auth")
 public class UserController implements UserControllerImpl {
 
-    // Контроллер отвечающий за авторизацию и регистрацию
 
     private final UserService userService;
 
 
-    // Метод регистрации
+
+    /**
+     * Метод регистрации
+     * @param dto запрос клиента
+     * @return ShortUserDto ответ клиенту в виде dto
+     */
     @Override
     @RequestMapping(
             method = RequestMethod.POST,
@@ -36,7 +43,11 @@ public class UserController implements UserControllerImpl {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
     }
 
-    // Метод авторизации
+    /**
+     * Метод авторизации
+     * @param dto запрос клиента
+     * @return ShortUserDto ответ клиенту в виде dto
+     */
     @Override
     @RequestMapping(
             method = RequestMethod.POST,

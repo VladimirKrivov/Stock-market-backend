@@ -15,6 +15,9 @@ import stock.market.backend.app.services.StocksService;
 
 import java.util.List;
 
+/**
+ * Контроллер обработки запросов связанных с акциями
+ */
 @RestController
 @AllArgsConstructor
 @Slf4j
@@ -25,7 +28,13 @@ public class StockController implements StockControllerImpl{
     private final StocksService stocksService;
 
 
-    // Запрос на получени акции либо из базы, либо от api
+
+    /**
+     * Метод позволяет получить акцию по ее названию для конкретного пользователя
+     * @param company название акции
+     * @param name имя пользователя
+     * @return stockDto найденная или добавленная акция в виде dto
+     */
     @Override
     @RequestMapping(
             method = RequestMethod.GET,
@@ -39,7 +48,12 @@ public class StockController implements StockControllerImpl{
         return new ResponseEntity<>(stockDto, HttpStatus.CREATED);
     }
 
-    // Найти все акции конкретного пользователя
+
+    /**
+     * Метод позволяет получить портфель акций конкретного пользователя
+     * @param name имя пользователя
+     * @return List<StockDto> - список всех акций пользователя
+     */
     @Override
     @RequestMapping(
             method = RequestMethod.GET,
@@ -52,7 +66,12 @@ public class StockController implements StockControllerImpl{
         return new ResponseEntity<>(stockDto, HttpStatus.OK);
     }
 
-    //Удалить акцию пользователя
+    /**
+     * Метод позволяет едалить акцию из портфеля пользователя
+     * @param name имя пользователя
+     * @param secid sec id акции
+     * @return HttpStatus.OK
+     */
     @Transactional
     @Override
     @RequestMapping(

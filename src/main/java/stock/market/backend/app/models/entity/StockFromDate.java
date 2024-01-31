@@ -1,10 +1,7 @@
 package stock.market.backend.app.models.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -13,11 +10,12 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "Stock_from_date_table")
+@Table(name = "stock_from_date_table")
 @Entity
+@ToString
 public class StockFromDate {
     @Id
-    @Column(name = "stocks_id", nullable = false)
+    @Column(name = "stock_frame_date_id", nullable = false)
     @GeneratedValue(generator = "UUID")
     private UUID id;
 

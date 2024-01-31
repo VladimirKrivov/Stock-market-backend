@@ -17,7 +17,7 @@ import java.util.UUID;
 @Entity
 public class HistoryElem {
     @Id
-    @Column(name = "stocks_id", nullable = false)
+    @Column(name = "history_elem_id", nullable = false)
     @GeneratedValue(generator = "UUID")
     private UUID id;
 

@@ -15,6 +15,9 @@ import stock.market.backend.app.util.Mapper;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Сервис с помощью которого обрабатываются запросы связанные с акциями
+ */
 @Service
 @AllArgsConstructor
 @Slf4j
@@ -26,7 +29,11 @@ public class StocksService implements StocksServiceImpl {
     private final Mapper mapper;
 
 
-    // Найти акцию по имени пользователя
+    /**
+     Найти акцию по названию у конкретного пользователя и вернуть в виде DTO.
+     @param nameStock имя акции
+     @param nameUser имя пользователя
+     @return объект StockDto, представляющий найденную акцию */
     @Override
     public StockDto findStock(String nameStock, String nameUser) {
         String[] words = nameStock.trim().split("\\s+");
@@ -62,7 +69,11 @@ public class StocksService implements StocksServiceImpl {
     }
 
 
-    // Найти в базе или обратится к api и найти акцию по имени
+    /**
+     Найти акцию по названию у конкретного пользователя и вернуть в виде entity.
+     @param nameStock имя акции
+     @param username имя пользователя
+     @return объект Stocks, представляющий найденную акцию */
     @Override
     public Stocks findStockEntity(String nameStock, String username) {
         String[] words = nameStock.trim().split("\\s+");
@@ -97,7 +108,10 @@ public class StocksService implements StocksServiceImpl {
         }
     }
 
-    // Получить все акции из портфеля конкретного пользователя
+    /**
+     Получить портфель пользователя.
+     @param username имя пользователя
+     @return List<StockDto>, список акций из портфеля пользователя */
     @Override
     public List<StockDto> findAllStockForUser(String username) {
         List<Stocks> stocks = new ArrayList<>();
@@ -125,7 +139,11 @@ public class StocksService implements StocksServiceImpl {
         return stockDtoList;
     }
 
-    // Удалить акцию из портфеля у конкретного пользователя
+    /**
+     Удалить акцию из портфеля у конкретного пользователя.
+     @param name имя пользователя
+     @param secid secid акции
+     */
     @Override
     @Transactional
     public void deleteForUser(String name, String secid) {
@@ -148,15 +166,14 @@ public class StocksService implements StocksServiceImpl {
                 stock = elem;
             }
         }
-
-
-
         user.getStocks().remove(stock);
-
         userRepositories.save(user);
-
     }
 
+    /**
+     Вспомогательный метод для корректного запроса к api Мос Биржи.
+     @param sentence строка, является запросом.
+     @return String, отформатированная строка */
     public String saveAfterDot(String sentence) {
         int dotIndex = sentence.lastIndexOf('.');
         if (dotIndex == -1 || dotIndex == sentence.length() - 1) {

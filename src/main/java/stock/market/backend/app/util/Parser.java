@@ -2,8 +2,8 @@ package stock.market.backend.app.util;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import stock.market.backend.app.models.dto.StockFromDateDto;
 import stock.market.backend.app.models.dto.StockDto;
+import stock.market.backend.app.models.dto.StockFromDateDto;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
@@ -15,7 +15,10 @@ import java.util.List;
 @Slf4j
 public class Parser {
 
-    // Парсим Json ответы от сервера мос биржи
+    /**
+     Метод преобразует строку json в dto акции.
+     @param content, json в виде строки.
+     @return объект StockDto полученный из json */
     public StockDto parseStock(String content) {
         StockDto stock = new StockDto();
 
@@ -43,6 +46,10 @@ public class Parser {
         return stock;
     }
 
+    /**
+     Метод преобразует список строк json в список dto торгов акции.
+     @param strings, список json в виде строки.
+     @return List<StockFromDateDto> полученный из json */
     public List<StockFromDateDto> parseHistory(List<String> strings) {
         List<String> newList = new ArrayList<>();
         List<String[]> arraysStr = new ArrayList<>();
@@ -89,14 +96,20 @@ public class Parser {
         return historyList;
     }
 
-
+    /**
+     Метод преобразует строку в объект LocalDate.
+     @param data, дата в виде строки.
+     @return LocalDate полученный из строки */
     public LocalDate parseDate(String data) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return LocalDate.parse(data, formatter);
     }
 
+    /**
+     Метод преобразует объект LocalDate в строку.
+     @param offsetDateTime, дата в виде LocalDate.
+     @return String полученный из LocalDate */
     public String formatOffsetDateTime(OffsetDateTime offsetDateTime) {
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         return offsetDateTime.format(formatter);
     }

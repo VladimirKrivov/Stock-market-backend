@@ -15,6 +15,9 @@ import stock.market.backend.app.util.Utils;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * Сервис с помощью которого запрашивается информация о конкретной акции за конкретный промежуток времени
+ */
 @Service
 @AllArgsConstructor
 @Slf4j
@@ -28,7 +31,13 @@ public class StockFromDateService implements StockFromDateServiceImpl {
     private final Utils utils;
 
 
-    // Получить список продаж за период времени для конкретной компании
+    /**
+     Получить список торгов конкретной акций за период времени.
+     @param company название акции
+     @param username имя пользователя
+     @param from начало периода
+     @param till конец периода
+     @return List<StockFromDate>, список содержащий историю торгов конкретной компании*/
     @Override
     public List<StockFromDate> getHistory(String company, String username, String from, String till) {
         LocalDate startDate = parser.parseDate(from);

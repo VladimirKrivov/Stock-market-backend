@@ -1,4 +1,4 @@
-package stock.market.backend.app.controllers.config;
+package stock.market.backend.app.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

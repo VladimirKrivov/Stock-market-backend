@@ -14,11 +14,13 @@ import java.util.List;
 @AllArgsConstructor
 public class Mapper {
 
-    // С помощью маппера производится конвертация из Entity в Dto и обратно
     private final Parser parser;
     private final PasswordEncoder passwordEncoder;
 
-    // Stocks
+    /**
+     Метод преобразует Dto акции в сущность.
+     @param dto, dto акции.
+     @return объект Stocks, является сущностью */
     public Stocks stocksDtoToStock(StockDto dto) {
         Stocks entity = new Stocks();
 
@@ -33,6 +35,10 @@ public class Mapper {
         return entity;
     }
 
+    /**
+     Метод преобразует сущность акции в dto.
+     @param entity, сущность акции.
+     @return объект StockDto, является dto */
     public StockDto stockToStockDto(Stocks entity) {
         StockDto dto = new StockDto();
 
@@ -46,7 +52,10 @@ public class Mapper {
         return dto;
     }
 
-    // StockFromDateDtoToStockFromDate
+    /**
+     Метод преобразует Dto акции за конкретный день торгов в сущность.
+     @param dto, dto акции.
+     @return объект StockFromDate, является сущностью */
     public StockFromDate StockFromDateDtoToStockFromDate(StockFromDateDto dto) {
         StockFromDate entity = new StockFromDate();
 
@@ -63,7 +72,10 @@ public class Mapper {
         return entity;
     }
 
-    // Users
+    /**
+     Метод преобразует Dto пользователя в сущность.
+     @param dto, dto акции.
+     @return объект User, является сущностью */
     public User userDtoToUser(UserDto dto) {
         User entity = new User();
 
@@ -74,26 +86,23 @@ public class Mapper {
         return entity;
     }
 
-    public UserDto userToUserDto(User entity) {
-        UserDto dto = new UserDto();
-
-        dto.setName(entity.getName());
-        dto.setPassword(entity.getPassword());
-
-        return dto;
-    }
-
+    /**
+     Метод преобразует сущность пользователя в dto.
+     @param entity, сущность пользователя.
+     @return объект ShortUserDto, является dto */
     public ShortUserDto userToShortUserDto(User entity) {
         ShortUserDto dto = new ShortUserDto();
-
         dto.setName(entity.getName());
 
         return dto;
     }
 
+    /**
+     Метод преобразует сущность элемента запроса расчета темпа роста в dto.
+     @param entity, сущность элемента запроса.
+     @return объект HistoryElemDto, является dto */
     public HistoryElemDto historyElemToHistoryElemDto(HistoryElem entity) {
         HistoryElemDto dto = new HistoryElemDto();
-
         dto.setDate(String.valueOf(entity.getDate()));
         dto.setShortName(entity.getShortName());
         String result = String.format("%.5f", entity.getGrowth());
@@ -101,12 +110,13 @@ public class Mapper {
         return dto;
     }
 
-
-
+    /**
+     Метод преобразует сущность запроса расчета темпа роста в dto.
+     @param entity, сущность запроса.
+     @return объект HistoryDto, является dto */
     public HistoryDto historyToHistoryDto(History entity) {
         HistoryDto dto = new HistoryDto();
 
-//        dto.setId(dto.getId());
         dto.setUserName(entity.getUser().getName());
         dto.setFrom(String.valueOf(entity.getFrom()));
         dto.setTill(String.valueOf(entity.getTill()));
@@ -117,10 +127,6 @@ public class Mapper {
 
         String result = String.format("%.2f", entity.getResult());
         dto.setResult(result);
-
-
-
-//        dto.setResult(String.valueOf(entity.getResult()));
 
         dto.setCreate(parser.formatOffsetDateTime(entity.getCreate()));
 

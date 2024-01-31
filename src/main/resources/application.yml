@@ -1,9 +1,3 @@
-api:
-  list-stock: https://iss.moex.com/iss/statistics/engines/stock/quotedsecurities
-  stocks: https://iss.moex.com/iss/securities.json?q=
-
-
-
 server:
   port: 8080
 
@@ -21,5 +15,5 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     show-sql: 'true'

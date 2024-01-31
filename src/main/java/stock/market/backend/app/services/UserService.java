@@ -25,7 +25,10 @@ public class UserService implements UserServiceImpl {
     private final PasswordEncoder passwordEncoder;
 
 
-    // Сервис выполняющий регистрацию
+    /**
+     Метод выполняющий регистрацию.
+     @param dto userDto, является объектом полученным от клиента
+     @return объект ShortUserDto, возвращается клиенту после успешной регистрации */
     @Override
     public ShortUserDto register(UserDto dto) {
         User user = userRepositories.findUsersByName(dto.getName());
@@ -39,7 +42,11 @@ public class UserService implements UserServiceImpl {
         } else
             return userDto;
     }
-    // Добавить в только что зарегистрированного пользователя 5 акций
+
+    /**
+     Метод инициализирует портфель только что зарегистрированного пользователя.
+     @param user entity пользователя
+     @return объект User, объект User с инициализированным портфелем */
     public User addFiveStocks(User user) {
         List<Stocks> stocksList = new ArrayList<>();
 
@@ -55,7 +62,10 @@ public class UserService implements UserServiceImpl {
         return us;
     }
 
-    // Сервис выполняющий авторизацию
+    /**
+     Метод выполняющий авторизацию.
+     @param dto userDto, является объектом полученным от клиента
+     @return объект ShortUserDto, возвращается клиенту после успешной авторизации */
     @Override
     public ShortUserDto login(UserDto dto) {
         User user = userRepositories.findUsersByName(dto.getName());
